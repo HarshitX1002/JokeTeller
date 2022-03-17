@@ -108,21 +108,33 @@ const VoiceRSS = {
   },
 };
 
-/* function test() {
-  VoiceRSS.speech({
-    key: "73de7014fc3246b89116ede0cc243047",
-    src: "Hello, world!",
-    hl: "en-us",
-    v: "Linda",
-    r: 0,
-    c: "mp3",
-    f: "44khz_16bit_stereo",
-    ssml: false,
-  });
+// Disable/Enable Button
+
+function toggleButton() {
+    button.disabled = !button.disabled;
 }
-test(); */
+
+
+
+// Passing Joke to VoiceRSS API
+function tellme(joke)
+{
+    console.log(joke);
+    VoiceRSS.speech({
+      key: '73de7014fc3246b89116ede0cc243047',
+      src: joke,
+      hl: "en-us",
+      v: "Linda",
+      r: 0,
+      c: "mp3",
+      f: "44khz_16bit_stereo",
+      ssml: false,
+    });
+}
+
+
 // Get jokes from Joke API
-async function getjokes() {
+async function getJokes() {
     let joke =  '';
 
   const apiUrl =
@@ -135,10 +147,15 @@ async function getjokes() {
     } else{
         joke = data.joke;
     }
-    console.log(joke);
+    // Text-to-Speech
+   tellme(joke);
+   // Disable Button
+   toggleButton();
   } catch (error) {
     // Catch Errors Here
     console.log("Whoops", error);
   }
 }
-getjokes();
+
+button.addEventListener('click',getJokes); 
+audioElement.addEventListener('ended', toggleButton);
